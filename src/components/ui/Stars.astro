@@ -1,0 +1,23 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  rating: number;
+  class?: string;
+}
+
+const { rating, class: className = "h-4 w-4" } = Astro.props;
+const full = Math.round(rating);
+---
+
+<div
+  class="flex items-center gap-0.5 text-amber-400"
+  role="img"
+  aria-label={`${rating.toLocaleString("pt-BR")} de 5 estrelas`}
+>
+  {Array.from({ length: 5 }, (_, i) => (
+    <span class={i < full ? "text-amber-400" : "text-stone-300"}>
+      <Icon name="star" class={className} />
+    </span>
+  ))}
+</div>

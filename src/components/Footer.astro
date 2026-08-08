@@ -1,0 +1,77 @@
+---
+import { site } from "../config/site";
+import Icon from "./ui/Icon.astro";
+import WhatsAppButton from "./ui/WhatsAppButton.astro";
+
+const year = new Date().getFullYear();
+
+const nav = [
+  { href: "/#servicos", label: "Serviços" },
+  { href: "/projetos", label: "Projetos" },
+  { href: "/#avaliacoes", label: "Avaliações" },
+  { href: "/#sobre", label: "Sobre" },
+  { href: "/#faq", label: "FAQ" },
+];
+---
+
+<footer class="bg-brand-deep text-stone-300">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
+    <div>
+      <p class="font-display text-xl font-bold text-white">{site.name}</p>
+      <p class="mt-3 max-w-xs text-sm leading-relaxed text-stone-400">{site.tagline}. {site.description}</p>
+      {site.instagram && (
+        <a
+          href={site.instagram}
+          target="_blank"
+          rel="noopener"
+          class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-stone-300 transition hover:text-white"
+        >
+          <Icon name="instagram" class="h-4 w-4" /> @{site.instagram.split("/").pop()}
+        </a>
+      )}
+    </div>
+
+    <nav aria-label="Rodapé">
+      <p class="text-sm font-semibold uppercase tracking-widest text-stone-400">Navegação</p>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {nav.map((l) => (
+          <li>
+            <a href={l.href} class="transition hover:text-white">{l.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div>
+      <p class="text-sm font-semibold uppercase tracking-widest text-stone-400">Contato</p>
+      <ul class="mt-4 space-y-3 text-sm">
+        <li class="flex items-start gap-2.5">
+          <Icon name="mapPin" class="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+          <span>{site.address.street}<br />{site.address.city}/{site.address.state}, {site.address.zip}</span>
+        </li>
+        <li class="flex items-center gap-2.5">
+          <Icon name="clock" class="h-4 w-4 shrink-0 text-brand" />
+          <span>{site.hours}</span>
+        </li>
+        <li class="flex items-center gap-2.5">
+          <Icon name="mail" class="h-4 w-4 shrink-0 text-brand" />
+          <a href={`mailto:${site.email}`} class="transition hover:text-white">{site.email}</a>
+        </li>
+      </ul>
+      <div class="mt-5">
+        <WhatsAppButton label="Chamar no WhatsApp" />
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-stone-400 sm:flex-row sm:px-6">
+      <p>© {year} {site.name}. Todos os direitos reservados.</p>
+      <div class="flex items-center gap-4">
+        <a href="/privacidade" class="transition hover:text-white">Política de Privacidade</a>
+        <span aria-hidden="true">·</span>
+        <p>Móveis sob medida, feitos à mão.</p>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,23 @@
+---
+import Icon from "./ui/Icon.astro";
+---
+
+<!-- Aparece depois de rolar a página; leva de volta ao topo -->
+<button
+  id="voltar-ao-topo"
+  type="button"
+  aria-label="Voltar ao topo"
+  class="fixed bottom-24 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-stone-300 bg-white/90 text-stone-700 shadow-lg backdrop-blur transition hover:bg-white hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+>
+  <Icon name="arrowUp" class="h-5 w-5" />
+</button>
+
+<script>
+  const btn = document.getElementById("voltar-ao-topo");
+  const toggle = () => {
+    btn.style.display = window.scrollY < 400 ? "none" : "flex";
+  };
+  toggle();
+  window.addEventListener("scroll", toggle, { passive: true });
+  btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+</script>

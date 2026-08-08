@@ -1,0 +1,87 @@
+---
+/**
+ * Ícones em linha (traço) + 2 preenchidos (whatsapp, star).
+ * Todos herdam a cor via `currentColor`.
+ */
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const { name, class: className = "h-5 w-5" } = Astro.props;
+
+const stroke: Record<string, string[]> = {
+  menu: ["M4 6h16", "M4 12h16", "M4 18h16"],
+  external: ["M14 3h7v7", "M21 3l-9 9", "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"],
+  arrowRight: ["M5 12h14", "M12 5l7 7-7 7"],
+  arrowUp: ["M12 19V5", "m5 12 7-7 7 7"],
+  mapPin: ["M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z", "M12 10v.01"],
+  clock: ["M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z", "M12 7v5l3 2"],
+  mail: [
+    "M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z",
+    "m2 7 10 6L22 7",
+  ],
+  instagram: [
+    "M16 3H8a5 5 0 0 0-5 5v8a5 5 0 0 0 5 5h8a5 5 0 0 0 5-5V8a5 5 0 0 0-5-5Z",
+    "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z",
+    "M17.5 6.5h.01",
+  ],
+  moveis: ["M3 5h18v4H3z", "M3 12h18v4H3z", "M10 7h4", "M10 14h4"],
+  cozinha: ["M4 4h16v5H4z", "M3 14h18", "M4 15h16v5H4z", "M9 6.5h6", "M9 17.5h6"],
+  armarios: ["M5 3h14v18H5z", "M12 3v18", "M8 8h4", "M8 12h4", "M8 16h4"],
+  portas: ["M5 3h14v18H5z", "M9 3v18", "M7 6h4v4H7z", "M7 14h4v4H7z"],
+  escadas: ["M5 3v18", "M19 3v18", "M5 6h14", "M5 10h14", "M5 14h14", "M5 18h14"],
+  restauro: [
+    "M12 3l1.8 4.8L19 10l-5.2 2.2L12 17l-1.8-4.8L5 10l5.2-2.2L12 3Z",
+    "M5 19h14",
+  ],
+};
+
+const filled: Record<string, string> = {
+  whatsapp:
+    "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z",
+  star: "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z",
+};
+---
+
+{
+  name === "whatsapp" || name === "star" ? (
+    <svg viewBox="0 0 24 24" fill="currentColor" class={className} aria-hidden="true">
+      <path d={filled[name]} />
+    </svg>
+  ) : name === "instagram" ? (
+    <svg viewBox="0 0 24 24" class={className} aria-hidden="true">
+      <defs>
+        <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#FEDA75" />
+          <stop offset="25%" stop-color="#FA7E1E" />
+          <stop offset="50%" stop-color="#D62976" />
+          <stop offset="75%" stop-color="#962FBF" />
+          <stop offset="100%" stop-color="#4F5BD5" />
+        </linearGradient>
+      </defs>
+      <g
+        fill="none"
+        stroke="url(#ig-grad)"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        {(stroke[name] ?? []).map((d) => <path d={d} />)}
+      </g>
+    </svg>
+  ) : (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={className}
+      aria-hidden="true"
+    >
+      {(stroke[name] ?? []).map((d) => <path d={d} />)}
+    </svg>
+  )
+}
