@@ -11,10 +11,18 @@ const links = [
   { href: "/#sobre", label: "Sobre" },
   { href: "/#faq", label: "FAQ" },
 ];
+
+// Iniciais do nome (ex.: "Marcenaria do João" vira "MJ") como fallback do logo
+const initials = site.name
+  .split(" ")
+  .filter((w) => w.length >= 3)
+  .slice(0, 2)
+  .map((w) => w[0].toUpperCase())
+  .join("");
 ---
 
 <header class="sticky top-0 z-40 border-b border-stone-200/80 bg-white/90 backdrop-blur">
-  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6" aria-label="Principal">
+  <nav class="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 sm:px-6" aria-label="Principal">
     <!-- Esquerda: hamburguer no mobile, logo no desktop -->
     <div class="flex items-center gap-3">
       <details class="group relative md:hidden">
@@ -25,7 +33,7 @@ const links = [
           {links.map((l) => (
             <a
               href={l.href}
-              class="block rounded-lg px-3 py-2.5 text-sm font-medium text-stone-700 transition hover:bg-stone-50"
+              class="block rounded-lg px-3 py-2.5 text-sm font-semibold text-stone-800 transition hover:bg-stone-50"
             >
               {l.label}
             </a>
@@ -33,30 +41,30 @@ const links = [
         </div>
       </details>
 
-      <a href="/#topo" class="hidden items-center gap-2.5 font-display text-lg font-bold text-stone-900 md:flex">
-        <svg viewBox="0 0 32 32" class="h-8 w-8" aria-hidden="true">
-          <rect width="32" height="32" rx="7" fill="var(--brand-deep)" />
-          <g stroke="#E8D9C0" stroke-width="2.4" stroke-linecap="round" fill="none">
-            <path d="M7 10h18" />
-            <path d="M11 10v7" />
-            <path d="M21 10v7" />
-            <path d="M7 17h18" />
-          </g>
-        </svg>
-        <span>{site.name}</span>
+      <a href="/#topo" aria-label={site.name} class="hidden items-center md:flex">
+        <img
+          src="/favicon.svg"
+          alt=""
+          class="h-8 w-8"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        />
+        <span class="hidden font-display text-lg font-bold text-stone-900" aria-hidden="true">
+          {initials}
+        </span>
       </a>
     </div>
 
-    <!-- Direita: links + Instagram + WhatsApp, sempre fora do menu -->
-    <div class="flex items-center gap-2.5 md:gap-7">
-      <div class="hidden items-center gap-7 md:flex">
-        {links.map((l) => (
-          <a href={l.href} class="text-sm font-medium text-stone-600 transition hover:text-stone-900">
-            {l.label}
-          </a>
-        ))}
-      </div>
+    <!-- Centro: links de navegação -->
+    <div class="hidden items-center gap-7 md:flex">
+      {links.map((l) => (
+        <a href={l.href} class="text-sm font-semibold text-stone-700 transition hover:text-stone-900">
+          {l.label}
+        </a>
+      ))}
+    </div>
 
+    <!-- Direita: Instagram + WhatsApp, sempre fora do menu -->
+    <div class="flex items-center justify-end gap-2.5 md:gap-7">
       {site.instagram && (
         <a
           href={site.instagram}
