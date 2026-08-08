@@ -102,10 +102,14 @@ src/
 
 ### Coolify (VPS própria)
 
-O repositório inclui um [`nixpacks.toml`](nixpacks.toml) que fixa o build. No
-Coolify: **Create New Resource → Public Repository** → Build Pack **Nixpacks** →
-marque **Is it a static site?** → **Publish Directory** `/dist`. O site é servido
-com Nginx e rebuila a cada push.
+O repositório inclui um [`Dockerfile`](Dockerfile) multi-stage que fixa a versão do
+Bun (1.3.14), builda o site e serve com Nginx. No Coolify:
+
+1. **Create New Resource** → **Public Repository** → cole a URL do repositório.
+2. Build Pack: **Dockerfile**.
+3. Defina o domínio e clique em **Deploy**.
+
+O Dockerfile é detectado automaticamente e o site rebuila a cada push.
 
 ### Outros provedores
 
