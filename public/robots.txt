@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://marcenaria-do-joao.com.br/sitemap-index.xml

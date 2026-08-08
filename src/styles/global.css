@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/*
+ * As cores da marca vêm do site.ts e chegam aqui via variáveis CSS
+ * definidas no <head> do layout (Base.astro). Trocar a cor do cliente =
+ * trocar 1 valor no site.ts, sem tocar em CSS.
+ */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-deep: var(--brand-deep);
+  --color-wa: #0a7d3f;
+  --color-wa-dark: #086633;
+}
+
+/* Fonte de destaque para títulos: tom artesanal, sem carregar webfont */
+@theme {
+  --font-display: Georgia, "Times New Roman", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Âncoras de seção não ficam escondidas atrás do menu fixo */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+::selection {
+  background: var(--brand);
+  color: #fff;
+}
