@@ -1,0 +1,221 @@
+---
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import { waLink } from "../lib/whatsapp";
+
+const projects = (await getCollection("portfolio")).sort(
+  (a, b) => b.data.year - a.data.year || a.id.localeCompare(b.id),
+);
+
+// Cada card é um projeto; as fotos dele abrem no lightbox.
+const cards = [];
+for (const p of projects) {
+  const lightboxSrcs = [];
+  for (const img of p.data.images) {
+    lightboxSrcs.push((await getImage({ src: img, width: 1200, quality: 80 })).src);
+  }
+  cards.push({
+    id: p.id,
+    title: p.data.title,
+    year: p.data.year,
+    tags: p.data.tags,
+    wa: waLink(`Olá! Vi o projeto "${p.data.title}" no site e quero um orçamento.`),
+    cover: p.data.images[0],
+    lightboxSrcs,
+  });
+}
+---
+
+<Base
+  title="Todos os nossos projetos"
+  description="Conheça todos os projetos que já saíram da nossa oficina: móveis sob medida, cozinhas planejadas, closets, escadas e restaurações."
+>
+  <section class="bg-stone-50 py-16 sm:py-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <header class="mx-auto max-w-2xl text-center">
+        <p class="text-sm font-semibold uppercase tracking-widest text-brand">Projetos</p>
+        <h1 class="mt-2 font-display text-3xl font-bold text-stone-900 sm:text-4xl">
+          Todos os nossos projetos
+        </h1>
+        <p class="mt-4 text-lg text-stone-600">
+          Cada projeto nasce de uma conversa e termina instalado na casa do cliente. Clique em um
+          card para ver as fotos.
+        </p>
+      </header>
+
+      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {cards.map((c) => (
+          <button
+            type="button"
+            data-gallery
+            data-title={c.title}
+            data-year={c.year}
+            data-tags={JSON.stringify(c.tags)}
+            data-wa={c.wa}
+            data-images={JSON.stringify(c.lightboxSrcs)}
+            class="group relative block w-full overflow-hidden rounded-2xl bg-stone-200 text-left shadow-sm transition hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image
+                src={c.cover}
+                alt={c.title}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+            <span class="absolute left-3 top-3 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+              {c.year}
+            </span>
+            {c.lightboxSrcs.length > 1 && (
+              <span class="absolute right-3 top-3 rounded-full bg-black/40 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm">
+                {c.lightboxSrcs.length} fotos
+              </span>
+            )}
+            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-5 pt-14">
+              <h2 class="font-display text-lg font-bold text-white">{c.title}</h2>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                {c.tags.map((tag) => (
+                  <span class="rounded-full bg-white/15 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <p class="mt-10 text-center text-sm text-stone-500">
+        Quer um projeto assim?{" "}
+        <a
+          href={waLink("Olá! Quero um projeto como um dos que vi na galeria do site.")}
+          target="_blank"
+          rel="noopener"
+          class="font-semibold text-brand hover:text-brand-dark"
+        >
+          Chame no WhatsApp
+        </a>{" "}
+        e conte a sua ideia.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lightbox: fotos do projeto clicado -->
+  <dialog
+    id="galeria-dialog"
+    class="m-auto w-[calc(100%-2rem)] max-w-3xl rounded-2xl bg-white p-0 shadow-2xl backdrop:bg-black/70"
+  >
+    <div class="relative">
+      <img
+        id="galeria-img"
+        class="aspect-[4/3] w-full bg-stone-200 object-cover"
+        alt=""
+      />
+      <span
+        id="galeria-count"
+        class="absolute bottom-3 left-3 rounded-full bg-black/50 px-2.5 py-1 text-xs font-semibold text-white"
+      ></span>
+      <button
+        id="galeria-close"
+        type="button"
+        aria-label="Fechar"
+        class="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white transition hover:bg-black/70"
+      >
+        ✕
+      </button>
+      <button
+        id="galeria-prev"
+        type="button"
+        aria-label="Foto anterior"
+        class="absolute left-3 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition hover:bg-black/70"
+      >
+        ‹
+      </button>
+      <button
+        id="galeria-next"
+        type="button"
+        aria-label="Próxima foto"
+        class="absolute right-3 top-1/2 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white transition hover:bg-black/70"
+      >
+        ›
+      </button>
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-4 p-6">
+      <div>
+        <h3 id="galeria-title" class="font-display text-lg font-bold text-stone-900"></h3>
+        <p id="galeria-tags" class="mt-1 text-sm text-stone-500"></p>
+      </div>
+      <a
+        id="galeria-wa"
+        href="#"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-2 rounded-full bg-wa px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-wa/25 transition hover:bg-wa-dark"
+      >
+        Quero um projeto assim
+      </a>
+    </div>
+  </dialog>
+
+  <style>
+    /* O preflight do Tailwind zera o margin de todos os elementos, o que quebra a
+       centralização nativa do <dialog>. m-auto (classe) + estes ajustes garantem
+       que ele abra no centro da tela, ocupando o máximo de largura com respiro. */
+    #galeria-dialog {
+      max-height: calc(100dvh - 2rem);
+      overflow-y: auto;
+    }
+  </style>
+
+  <script>
+    const dialog = document.getElementById("galeria-dialog");
+    const imgEl = document.getElementById("galeria-img");
+    const titleEl = document.getElementById("galeria-title");
+    const tagsEl = document.getElementById("galeria-tags");
+    const countEl = document.getElementById("galeria-count");
+    const waEl = document.getElementById("galeria-wa");
+    const prevBtn = document.getElementById("galeria-prev");
+    const nextBtn = document.getElementById("galeria-next");
+
+    const state = { images: [], index: 0 };
+
+    function render() {
+      const total = state.images.length;
+      imgEl.src = state.images[state.index];
+      const multi = total > 1;
+      countEl.textContent = multi ? `${state.index + 1} / ${total}` : "";
+      prevBtn.classList.toggle("hidden", !multi);
+      nextBtn.classList.toggle("hidden", !multi);
+    }
+
+    document.querySelectorAll("[data-gallery]").forEach((card) => {
+      card.addEventListener("click", () => {
+        state.images = JSON.parse(card.dataset.images || "[]");
+        state.index = 0;
+        titleEl.textContent = card.dataset.title;
+        const tags = JSON.parse(card.dataset.tags || "[]");
+        tagsEl.textContent = [card.dataset.year, ...tags].filter(Boolean).join(" · ");
+        waEl.href = card.dataset.wa;
+        render();
+        dialog.showModal();
+      });
+    });
+
+    prevBtn.addEventListener("click", () => {
+      state.index = (state.index - 1 + state.images.length) % state.images.length;
+      render();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      state.index = (state.index + 1) % state.images.length;
+      render();
+    });
+
+    document.getElementById("galeria-close").addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+  </script>
+</Base>
