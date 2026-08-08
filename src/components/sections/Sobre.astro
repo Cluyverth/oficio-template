@@ -62,7 +62,7 @@ import WhatsAppButton from "../ui/WhatsAppButton.astro";
       <iframe
         src={`https://www.google.com/maps?q=${encodeURIComponent(
           `${site.address.street}, ${site.address.city} - ${site.address.state}`,
-        )}&output=embed`}
+        )}&z=16&output=embed`}
         title={`Onde fica a ${site.name}`}
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"

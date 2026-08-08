@@ -33,11 +33,13 @@ export const site = {
 
   email: "contato@example.com",
 
+  /** Endereço de exemplo (Marco Zero do Recife, ponto público): o mapa no "Sobre"
+      segue este endereço. Troque pelo endereço real do cliente quando vender. */
   address: {
-    street: "Rua das Oficinas, 123",
-    city: "São Paulo",
-    state: "SP",
-    zip: "01000-000",
+    street: "Praça Rio Branco, s/n",
+    city: "Recife",
+    state: "PE",
+    zip: "50030-230",
   },
 
   hours: "Seg a Sex, 8h às 18h · Sáb, 8h às 12h",
