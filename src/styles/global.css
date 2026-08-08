@@ -13,9 +13,10 @@
   --color-wa-dark: #086633;
 }
 
-/* Fonte de destaque para títulos: Fraunces (variável, self-hosted), tom artesanal */
+/* Fontes self-hosted: Lora (títulos, tom artesanal) + Plus Jakarta Sans (corpo/UI) */
 @theme {
-  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-display: "Lora Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {

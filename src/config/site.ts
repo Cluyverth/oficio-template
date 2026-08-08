@@ -11,11 +11,11 @@ export const site = {
   name: "Marcenaria do João",
 
   /** Frase principal do site: use as palavras que o cliente pesquisa no Google */
-  tagline: "Móveis sob medida em madeira maciça",
+  tagline: "Móveis sob medida que duram gerações",
 
   /** Descrição curta: meta tag de SEO e topo da página */
   description:
-    "Marcenaria em São Paulo especializada em móveis planejados, cozinhas, armários e restauração. Peça seu orçamento pelo WhatsApp.",
+    "Planejamos, fabricamos e instalamos móveis em madeira maciça para a sua casa. Peça seu orçamento pelo WhatsApp.",
 
   /** URL final do site (canonical, sitemap e dados estruturados) */
   /** IMPORTANTE: links de exemplo. example.com é domínio reservado (IANA) e não
