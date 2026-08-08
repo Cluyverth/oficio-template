@@ -36,7 +36,7 @@ const rendered = await Promise.all(
 
     <div class="mx-auto mt-12 flex max-w-xl flex-col items-center gap-3 text-center">
       <div class="flex items-baseline gap-2">
-        <span class="font-sans text-6xl font-bold tabular-nums leading-none text-brand">{formatRating(avg)}</span>
+        <span class="font-display text-6xl font-bold leading-none text-brand">{formatRating(avg)}</span>
         <span class="text-lg font-medium text-stone-500">de 5</span>
       </div>
       <Stars rating={avg} class="h-5 w-5" />

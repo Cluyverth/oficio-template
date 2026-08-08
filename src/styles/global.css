@@ -13,9 +13,9 @@
   --color-wa-dark: #086633;
 }
 
-/* Fonte de destaque para títulos: tom artesanal, sem carregar webfont */
+/* Fonte de destaque para títulos: Fraunces (variável, self-hosted), tom artesanal */
 @theme {
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
 }
 
 html {
