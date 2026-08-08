@@ -102,14 +102,22 @@ src/
 
 ### Coolify (VPS própria)
 
-O repositório inclui um [`Dockerfile`](Dockerfile) multi-stage que fixa a versão do
-Bun (1.3.14), builda o site e serve com Nginx. No Coolify:
+O repositório inclui um [`Dockerfile`](Dockerfile) multi-stage: ele fixa a versão do
+Bun (1.3.14, a mesma do lockfile), roda o build do Astro e serve o resultado com
+Nginx. Usar Dockerfile evita depender da versão do Bun que o Nixpacks empacota
+(versões antigas do nixpkgs falham no `bun install` deste projeto).
 
-1. **Create New Resource** → **Public Repository** → cole a URL do repositório.
-2. Build Pack: **Dockerfile**.
-3. Defina o domínio e clique em **Deploy**.
+**Passo a passo (deploy público via Coolify):**
 
-O Dockerfile é detectado automaticamente e o site rebuila a cada push.
+1. **Create New Resource** → **Public Repository** → cole a URL do repositório
+   (repositório público dispensa GitHub App/Deploy Key).
+2. **Build Pack: Dockerfile** — o Coolify detecta o `Dockerfile` na raiz sozinho;
+   nenhuma outra configuração de build é necessária.
+3. **Domain**: defina o domínio (ex.: `oficio.cluyverth.com`) e clique em **Deploy**.
+   O SSL via Let's Encrypt é emitido automaticamente.
+4. Pronto: a cada `git push` na `main`, o Coolify rebuila e publica a nova versão.
+
+A imagem final roda apenas o Nginx servindo o `dist/` (arquivos estáticos).
 
 ### Outros provedores
 
