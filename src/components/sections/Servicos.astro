@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import { waLink } from "../../lib/whatsapp";
+import Icon from "../ui/Icon.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+
+const services = (await getCollection("services")).sort((a, b) => a.id.localeCompare(b.id));
+
+const rendered = await Promise.all(
+  services.map(async (s) => ({ ...s, Content: (await render(s)).Content })),
+);
+---
+
+<section id="servicos" class="bg-white py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeading
+      eyebrow="O que fazemos"
+      title="Serviços de marcenaria"
+      description="Do projeto à instalação: cada peça é pensada, cortada e finalizada na nossa oficina, sob medida para o seu espaço."
+    />
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {rendered.map((s) => (
+        <article class="group flex flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white transition hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5">
+          {s.data.image && (
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image
+                src={s.data.image}
+                alt={s.data.title}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-7">
+            <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
+              <Icon name={s.data.icon} class="h-6 w-6" />
+            </div>
+            <h3 class="mt-5 font-display text-xl font-bold text-stone-900">{s.data.title}</h3>
+            <div class="mt-2 flex-1 text-sm leading-relaxed text-stone-600">
+              <s.Content />
+            </div>
+            <a
+              href={waLink(`Olá! Quero um orçamento para ${s.data.title.toLowerCase()}.`)}
+              target="_blank"
+              rel="noopener"
+              class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition group-hover:gap-2.5 hover:text-brand-dark"
+            >
+              Pedir orçamento
+              <Icon name="arrowRight" class="h-4 w-4" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

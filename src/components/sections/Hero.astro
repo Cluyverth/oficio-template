@@ -1,0 +1,63 @@
+---
+import { site } from "../../config/site";
+import { formatRating } from "../../lib/format";
+import Icon from "../ui/Icon.astro";
+import Stars from "../ui/Stars.astro";
+import WhatsAppButton from "../ui/WhatsAppButton.astro";
+// Foto de fundo do hero: troque pela melhor foto de trabalho do cliente.
+// Se a imagem não carregar, o fundo marrom (--brand-deep) aparece no lugar.
+import heroImage from "../../content/portfolio/mesa-jantar.jpg";
+
+interface Props {
+  avg: number;
+  count: number;
+}
+
+const { avg, count } = Astro.props;
+---
+
+<section id="topo" class="relative overflow-hidden bg-brand-deep text-stone-100">
+  <!-- foto de trabalho ao fundo (a cor marrom é o fallback se a imagem não carregar) -->
+  <img
+    src={heroImage.src}
+    alt=""
+    aria-hidden="true"
+    class="absolute inset-0 h-full w-full object-cover"
+    fetchpriority="high"
+  />
+  <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-b from-brand-deep/85 via-brand-deep/60 to-brand-deep/95" />
+
+  <!-- brilho decorativo -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-32 left-1/2 h-96 w-[42rem] -translate-x-1/2 rounded-full bg-brand/25 blur-3xl" />
+    <div class="absolute -bottom-40 -left-24 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
+  </div>
+
+  <div class="relative mx-auto max-w-6xl px-4 py-20 text-center sm:px-6 sm:py-28">
+    <p class="text-sm font-semibold uppercase tracking-[0.25em] text-amber-200/90">
+      {site.name} · {site.address.city}/{site.address.state}
+    </p>
+    <h1 class="mx-auto mt-5 max-w-3xl font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+      {site.tagline}
+    </h1>
+    <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-stone-300">{site.description}</p>
+
+    <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+      <WhatsAppButton size="lg" />
+      <a
+        href="/projetos"
+        class="inline-flex items-center gap-2 rounded-full border border-stone-500/60 px-7 py-3.5 text-base font-semibold text-stone-200 transition hover:border-stone-300 hover:text-white"
+      >
+        Ver projetos
+        <Icon name="arrowRight" class="h-4 w-4" />
+      </a>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-stone-300">
+      <Stars rating={avg} />
+      <span>
+        <strong class="font-semibold text-white">{formatRating(avg)}</strong> no Google · {count} avaliações
+      </span>
+    </div>
+  </div>
+</section>

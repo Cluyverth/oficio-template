@@ -1,0 +1,101 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { render } from "astro:content";
+import { Image } from "astro:assets";
+import { site } from "../../config/site";
+import { formatMonth, formatRating } from "../../lib/format";
+import Icon from "../ui/Icon.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import Stars from "../ui/Stars.astro";
+
+interface Props {
+  reviews: CollectionEntry<"reviews">[];
+  avg: number;
+}
+
+const { reviews, avg } = Astro.props;
+
+// Só os reviews marcados com `featured: true` aparecem na home
+// (escolha os melhores no frontmatter de cada review).
+// Se nenhum estiver marcado, mostra todos (comportamento padrão).
+const featured = reviews.filter((r) => r.data.featured);
+const shown = featured.length > 0 ? featured : reviews;
+
+const rendered = await Promise.all(
+  shown.map(async (r) => ({ ...r, Content: (await render(r)).Content })),
+);
+---
+
+<section id="avaliacoes" class="bg-white py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeading
+      eyebrow="Avaliações"
+      title="O que os clientes falam no Google"
+      description="Avaliações reais do perfil da nossa marcenaria no Google, com fotos dos projetos entregues."
+    />
+
+    <div class="mx-auto mt-10 flex max-w-xl flex-col items-center gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-8 py-6 text-center sm:flex-row sm:justify-center sm:text-left">
+      <Stars rating={avg} class="h-6 w-6" />
+      <p class="text-sm text-stone-600">
+        <strong class="text-lg font-bold text-stone-900">{formatRating(avg)} de 5</strong>
+        <br />{reviews.length} avaliações no Google
+      </p>
+      <a
+        href={site.googleUrl}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition hover:text-brand-dark"
+      >
+        Ver todas no Google
+        <Icon name="external" class="h-3.5 w-3.5" />
+      </a>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {rendered.map((r) => (
+        <figure class="flex flex-col overflow-hidden rounded-2xl border border-stone-200 bg-white transition hover:shadow-md">
+          {r.data.image && (
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image
+                src={r.data.image}
+                alt={`Projeto citado por ${r.data.name}`}
+                class="h-full w-full object-cover"
+                loading="lazy"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-6">
+            <Stars rating={r.data.stars} />
+            <blockquote class="mt-4 flex-1 text-sm leading-relaxed text-stone-700">
+              “<r.Content />”
+            </blockquote>
+            <figcaption class="mt-5 flex items-center justify-between gap-3 border-t border-stone-100 pt-4">
+              <div>
+                <p class="text-sm font-bold text-stone-900">{r.data.name}</p>
+                <p class="text-xs text-stone-500">{formatMonth(r.data.date)}</p>
+              </div>
+              <a
+                href={r.data.googleUrl}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-brand transition hover:text-brand-dark"
+              >
+                Ver no Google
+                <Icon name="external" class="h-3 w-3" />
+              </a>
+            </figcaption>
+          </div>
+        </figure>
+      ))}
+    </div>
+
+    <p class="mt-10 text-center text-sm text-stone-500">
+      Já contratou nossos serviços?{" "}
+      <a href={site.googleUrl} target="_blank" rel="noopener" class="font-semibold text-brand hover:text-brand-dark">
+        Deixe sua avaliação no Google
+      </a>{" "}
+      , isso ajuda muito a nossa oficina.
+    </p>
+  </div>
+</section>

@@ -1,0 +1,74 @@
+---
+import { site } from "../../config/site";
+import Icon from "../ui/Icon.astro";
+import SectionHeading from "../ui/SectionHeading.astro";
+import WhatsAppButton from "../ui/WhatsAppButton.astro";
+---
+
+<section id="sobre" class="bg-stone-50 py-20 sm:py-24">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-start">
+    <div>
+      <SectionHeading
+        align="left"
+        eyebrow="Sobre a oficina"
+        title={`Quem está por trás da ${site.name}`}
+      />
+      <div class="mt-6 space-y-4 text-base leading-relaxed text-stone-600">
+        {site.about.map((p) => <p>{p}</p>)}
+      </div>
+
+      <dl class="mt-10 grid grid-cols-3 gap-4">
+        {site.stats.map((s) => (
+          <div class="rounded-2xl border border-stone-200 bg-white p-4 text-center">
+            <dt class="order-2 mt-1 block text-xs text-stone-500">{s.label}</dt>
+            <dd class="order-1 font-display text-2xl font-bold text-brand">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <aside class="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
+      <h3 class="font-display text-xl font-bold text-stone-900">Informações</h3>
+      <ul class="mt-5 space-y-4 text-sm text-stone-700">
+        <li class="flex items-start gap-3">
+          <Icon name="mapPin" class="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+          <span>
+            {site.address.street}, {site.address.city}/{site.address.state}, {site.address.zip}
+          </span>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="clock" class="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+          <span>{site.hours}</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="mail" class="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+          <a href={`mailto:${site.email}`} class="font-medium text-stone-900 hover:text-brand">
+            {site.email}
+          </a>
+        </li>
+        <li class="flex items-start gap-3">
+          <Icon name="whatsapp" class="mt-0.5 h-5 w-5 shrink-0 text-brand" />
+          <span class="font-medium text-stone-900">{site.phoneDisplay}</span>
+        </li>
+      </ul>
+      <div class="mt-7 border-t border-stone-100 pt-6">
+        <WhatsAppButton label="Falar com a oficina" />
+      </div>
+    </aside>
+  </div>
+
+  <div class="mx-auto mt-12 max-w-6xl px-4 sm:px-6">
+    <div class="overflow-hidden rounded-3xl border border-stone-200 shadow-sm">
+      <iframe
+        src={`https://www.google.com/maps?q=${encodeURIComponent(
+          `${site.address.street}, ${site.address.city} - ${site.address.state}`,
+        )}&output=embed`}
+        title={`Onde fica a ${site.name}`}
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        allowfullscreen
+        class="h-80 w-full border-0"
+      ></iframe>
+    </div>
+  </div>
+</section>

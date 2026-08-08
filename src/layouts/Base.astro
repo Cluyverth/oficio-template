@@ -1,0 +1,119 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import FloatingWhatsApp from "../components/FloatingWhatsApp.astro";
+import BackToTop from "../components/BackToTop.astro";
+import { site } from "../config/site";
+import { getCollection } from "astro:content";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.name, description = site.description } = Astro.props;
+
+const reviews = (await getCollection("reviews")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const avg = reviews.reduce((sum, r) => sum + r.data.stars, 0) / reviews.length;
+
+const pageTitle = title === site.name ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, site.url).toString();
+
+const phoneSchema = `+${site.phone.slice(0, 2)} ${site.phone.slice(2, 4)} ${site.phone.slice(4, 9)}-${site.phone.slice(9)}`;
+
+/** Dados estruturados: negócio local com avaliações (rich results no Google) */
+const ldBusiness = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "@id": `${site.url}/#business`,
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: phoneSchema,
+  email: site.email,
+  image: `${site.url}/favicon.svg`,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: site.address.street,
+    addressLocality: site.address.city,
+    addressRegion: site.address.state,
+    postalCode: site.address.zip,
+    addressCountry: "BR",
+  },
+  openingHours: "Mo-Fr 08:00-18:00, Sa 08:00-12:00",
+  ...(site.instagram ? { sameAs: [site.instagram] } : {}),
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: avg.toFixed(1),
+    reviewCount: reviews.length,
+  },
+  review: reviews.slice(0, 3).map((r) => ({
+    "@type": "Review",
+    author: { "@type": "Person", name: r.data.name },
+    datePublished: r.data.date.toISOString().slice(0, 10),
+    reviewBody: r.body?.trim(),
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue: r.data.stars,
+      bestRating: 5,
+    },
+  })),
+};
+
+/** Dados estruturados: perguntas frequentes */
+const ldFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: site.faq.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Dados estruturados -->
+    <script type="application/ld+json" set:html={JSON.stringify(ldBusiness)} />
+    <script type="application/ld+json" set:html={JSON.stringify(ldFaq)} />
+
+    <!-- Cores do cliente (vêm do site.ts) -->
+  </head>
+  <body
+    style={`--brand: ${site.colors.primary}; --brand-dark: ${site.colors.primaryDark}; --brand-deep: ${site.colors.deep};`}
+    class="flex min-h-screen flex-col bg-stone-50 text-stone-800"
+  >
+    <Navbar />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <FloatingWhatsApp />
+    <BackToTop />
+  </body>
+</html>
