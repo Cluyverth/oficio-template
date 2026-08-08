@@ -20,7 +20,7 @@ export const site = {
   /** URL final do site (canonical, sitemap e dados estruturados) */
   /** IMPORTANTE: links de exemplo. example.com é domínio reservado (IANA) e não
       pertence a ninguém. Troque tudo antes de publicar para um cliente. */
-  url: "https://example.com",
+  url: "https://oficio.cluyverth.com",
 
   /** WhatsApp com DDI + DDD, somente números */
   phone: "5511999999999",
