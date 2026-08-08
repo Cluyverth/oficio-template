@@ -1,0 +1,15 @@
+# Configuração do Nixpacks, usada automaticamente pelo Coolify para buildar o site.
+# Docs: https://nixpacks.com/docs/configuration/file
+# O modo "Is it a static site?" do Coolify serve o diretório de build com Nginx.
+
+[phases.setup]
+nixPkgs = ["bun"]
+
+[phases.install]
+cmds = ["bun install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["bun run build"]
+
+[start]
+cmd = "bun run preview"
