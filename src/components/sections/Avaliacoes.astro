@@ -34,21 +34,24 @@ const rendered = await Promise.all(
       description="Avaliações reais do perfil da nossa marcenaria no Google, com fotos dos projetos entregues."
     />
 
-    <div class="mx-auto mt-10 flex max-w-xl flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:text-left">
-      <Stars rating={avg} class="h-6 w-6" />
-      <p class="text-sm text-stone-600">
-        <strong class="text-lg font-bold text-stone-900">{formatRating(avg)} de 5</strong>
-        <br />{reviews.length} avaliações no Google
+    <div class="mx-auto mt-12 flex max-w-xl flex-col items-center gap-3 text-center">
+      <div class="flex items-baseline gap-2">
+        <span class="font-display text-6xl font-bold leading-none text-brand">{formatRating(avg)}</span>
+        <span class="text-lg font-medium text-stone-500">de 5</span>
+      </div>
+      <Stars rating={avg} class="h-5 w-5" />
+      <p class="text-sm text-stone-500">
+        {reviews.length} avaliações no Google ·{" "}
+        <a
+          href={site.googleUrl}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-1 font-semibold text-brand transition hover:text-brand-dark"
+        >
+          Ver todas no Google
+          <Icon name="arrowRight" class="h-3.5 w-3.5" />
+        </a>
       </p>
-      <a
-        href={site.googleUrl}
-        target="_blank"
-        rel="noopener"
-        class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition hover:text-brand-dark"
-      >
-        Ver todas no Google
-        <Icon name="external" class="h-3.5 w-3.5" />
-      </a>
     </div>
 
     <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
