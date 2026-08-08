@@ -21,7 +21,7 @@ const reviews = (await getCollection("reviews")).sort(
 );
 const avg = reviews.reduce((sum, r) => sum + r.data.stars, 0) / reviews.length;
 
-const pageTitle = title === site.name ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+const pageTitle = title === site.name ? site.name : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 
 const phoneSchema = `+${site.phone.slice(0, 2)} ${site.phone.slice(2, 4)} ${site.phone.slice(4, 9)}-${site.phone.slice(9)}`;

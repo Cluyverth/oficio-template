@@ -8,7 +8,7 @@
 
 export const site = {
   /** Nome da marcenaria (menu, rodapé, metadados) */
-  name: "Marcenaria do João",
+  name: "Ofício Template",
 
   /** Frase principal do site: use as palavras que o cliente pesquisa no Google */
   tagline: "Móveis sob medida que duram gerações",
