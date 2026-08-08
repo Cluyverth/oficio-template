@@ -1,47 +1,61 @@
-# oficio-template
+# Ofício
 
-Site profissional para negócios de serviço: marcenarias, encanadores, eletricistas,
-reformas. Um template pensado para ser entregue a clientes reais: todos os dados do
-negócio ficam em um único arquivo de configuração e o conteúdo (serviços, projetos,
-avaliações) é editado em Markdown.
+**Um site profissional para quem vive do próprio trabalho.** Template completo de site
+para prestadores de serviço: marcenarias, encanadores, eletricistas, reformas e
+qualquer negócio que venda serviço. Feito para ser entregue a clientes reais, com
+conteúdo editável em Markdown e dados centralizados em um único arquivo.
 
 [![Astro](https://img.shields.io/badge/Astro-7-BC52EE?logo=astro&logoColor=white)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Bun](https://img.shields.io/badge/Bun-1.3-F9F1E1?logo=bun&logoColor=white)](https://bun.sh)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+## O que é
+
+Um produto de site estático construído para resolver um problema real: pequenos
+negócios de serviço precisam de presença online profissional, mas não têm tempo (nem
+orçamento) para um site sob medida do zero. Este template entrega isso em um pacote
+que qualquer pessoa consegue adaptar em minutos.
+
+- **Para o cliente:** um site rápido, bonito e focado em conversão, com botão de
+  WhatsApp em todo lugar, avaliações do Google e galeria de projetos.
+- **Para o dev:** um codebase limpo, documentado e 100% estático, sem banco, sem
+  backend, quase sem JavaScript no navegador. Deploy em qualquer lugar.
+
 ## Screenshots
 
-| Home | Projetos |
+| Home | Página de projetos |
 | --- | --- |
 | ![Home](docs/screenshot-home.webp) | ![Projetos](docs/screenshot-projetos.webp) |
 
 ## O que o site entrega
 
-- **Conversão direta para WhatsApp**: botões flutuantes, no header, no hero e em
-  cada serviço/projeto, com mensagem pré-preenchida por contexto (ex.: "Olá! Quero
-  um orçamento para cozinhas planejadas."). Sem formulário, sem backend.
-- **Página de projetos com galeria**: um card por projeto, cada um com várias fotos
-  que abrem em um lightbox com navegação.
-- **Avaliações do Google com curadoria**: só as melhores avaliações aparecem na home
-  (flag `featured`), com a foto do projeto citado.
-- **Sobre com mapa**: Google Maps embutido a partir do endereço da configuração.
-- **Política de privacidade em conformidade com a LGPD**: página pronta, com direitos
-  do titular e tratamento de imagens.
-- **SEO de verdade**: dados estruturados JSON-LD (negócio local, aggregate rating,
-  reviews e FAQ), sitemap.xml automático, Open Graph e meta tags.
-- **Performance**: site 100% estático, quase zero JavaScript no navegador, imagens
-  otimizadas automaticamente pelo Astro.
+- **Conversão direta para WhatsApp** — botão flutuante, no header, no hero e em cada
+  serviço e projeto, com mensagem pré-preenchida por contexto ("Olá! Quero um
+  orçamento para cozinhas planejadas."). Sem formulário, sem backend, sem custo.
+- **Página de projetos com galeria e lightbox** — um card por projeto, várias fotos
+  por projeto, navegação entre fotos e CTA de orçamento dentro do lightbox.
+- **Avaliações do Google com curadoria** — a home mostra apenas as melhores
+  avaliações (flag `featured`), com a foto do projeto citado.
+- **Seção Sobre com mapa** — Google Maps embutido a partir do endereço da
+  configuração; o pin acompanha o endereço do cliente automaticamente.
+- **Política de privacidade em conformidade com a LGPD** — página pronta, incluindo
+  direitos do titular e tratamento de imagens.
+- **SEO estruturado** — JSON-LD com `LocalBusiness`, `aggregateRating`, `Review` e
+  `FAQPage` para rich results no Google, sitemap automático, Open Graph.
+- **Performance** — site 100% estático, ~0 JavaScript no navegador, imagens
+  otimizadas pelo Astro e fontes self-hosted (sem request a terceiros, sem cookies
+  de rastreamento).
 
 ## Stack
 
-| Camada | Tecnologia |
-| --- | --- |
-| Framework | Astro 7 |
-| Estilo | Tailwind CSS 4 |
-| Runtime/package manager | Bun |
-| Build | `astro build` (saída estática em `dist/`) |
-| Extras | @astrojs/sitemap |
+| Camada | Escolha | Por quê |
+| --- | --- | --- |
+| Framework | **Astro 7** | Gera HTML estático com ~0 JS; content collections validam o conteúdo |
+| Estilo | **Tailwind CSS 4** | Design system rápido e consistente via tokens CSS |
+| Runtime | **Bun** | Instalação e build muito mais rápidos que npm |
+| Fontes | **Lora + Plus Jakarta Sans** | Self-hosted via @fontsource; visual artesanal e legível sem dependência externa |
+| SEO | **@astrojs/sitemap** | sitemap.xml gerado no build |
 
 ## Como rodar
 
@@ -56,13 +70,12 @@ bun run preview   # serve o build localmente
 
 Tudo que muda de negócio para negócio está em 2 lugares:
 
-1. **`src/config/site.ts`** — nome, tagline, telefone/WhatsApp, endereço, horário,
-   Instagram, cores da marca (3 hex), textos, estatísticas e FAQ. É o único arquivo
-   que precisa de edição para adaptar o site.
+1. **`src/config/site.ts`** — nome, tagline, WhatsApp, endereço, horário, Instagram,
+   cores da marca, textos, estatísticas e FAQ. Um único arquivo.
 2. **`src/content/`** — conteúdo em Markdown:
-   - `services/` — serviços (título, ícone, foto ilustrativa, descrição);
-   - `portfolio/` — projetos da galeria (várias fotos por projeto, título, tags, ano);
-   - `reviews/` — avaliações do Google (nome, estrelas, data, link, `featured` e foto).
+   - `services/` — serviços (título, ícone, foto, descrição);
+   - `portfolio/` — projetos (várias fotos por projeto, tags, ano);
+   - `reviews/` — avaliações do Google (`featured: true` define o que aparece na home).
 
 A ordem das seções da home é definida em `src/pages/index.astro`.
 
@@ -89,37 +102,29 @@ src/
 
 ### Coolify (VPS própria)
 
-O repositório já inclui um [`nixpacks.toml`](nixpacks.toml) que fixa o build
-(`bun install` + `bun run build`). No Coolify:
-
-1. **Create New Resource** → **Public Repository** → cole a URL do repositório.
-2. Build Pack: **Nixpacks** (padrão).
-3. Marque **Is it a static site?** e defina **Publish Directory** como `/dist`
-   (o Coolify serve o site com Nginx).
-4. Defina o domínio e clique em **Deploy**.
-
-A cada `git push`, o Coolify rebuila e publica automaticamente. Alternativa para
-Vercel/Netlify/Cloudflare Pages: build command `bun run build`, publish directory `dist`.
+O repositório inclui um [`nixpacks.toml`](nixpacks.toml) que fixa o build. No
+Coolify: **Create New Resource → Public Repository** → Build Pack **Nixpacks** →
+marque **Is it a static site?** → **Publish Directory** `/dist`. O site é servido
+com Nginx e rebuila a cada push.
 
 ### Outros provedores
 
-- **Netlify** — build command `bun run build`, publish directory `dist`
+- **Netlify** — build `bun run build`, publish directory `dist`
 - **Vercel** — framework preset Astro, output `dist`
 - **Cloudflare Pages** — build `bun run build`, output `dist`
 
 ## LGPD
 
-O template inclui uma [política de privacidade](src/pages/privacidade.astro) pronta:
-o site não coleta dados automaticamente (sem formulários e sem cookies de
-rastreamento), as conversas acontecem no WhatsApp do cliente e as fotos de projetos e
-depoimentos são publicadas somente com consentimento. Antes de publicar, revise o
-nome do controlador e o e-mail de contato em `src/config/site.ts`.
+Política de privacidade pronta em `src/pages/privacidade.astro`: o site não coleta
+dados automaticamente (sem formulários, sem cookies de rastreamento), as conversas
+acontecem no WhatsApp do cliente e fotos/depoimentos são publicados somente com
+consentimento.
 
-## Créditos das fotos de exemplo
+## Créditos
 
-As fotos do template vêm do [Unsplash](https://unsplash.com) (licença livre para uso
-comercial, sem atribuição obrigatória). Substitua pelas fotos reais dos trabalhos do
-cliente, com autorização de uso de imagem.
+Fotos de exemplo do [Unsplash](https://unsplash.com) (licença livre para uso
+comercial). Substitua pelas fotos reais dos trabalhos do cliente, com autorização de
+uso de imagem.
 
 ## Licença
 
